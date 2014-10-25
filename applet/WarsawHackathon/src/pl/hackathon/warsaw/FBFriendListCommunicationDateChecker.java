@@ -15,12 +15,19 @@ import facebook4j.Friend;
 import facebook4j.Friendlist;
 import facebook4j.InboxResponseList;
 import facebook4j.Message;
+import facebook4j.Reading;
 import facebook4j.ResponseList;
 
 public class FBFriendListCommunicationDateChecker {
 
     private Facebook facebook;
+    private Date oldestDate;
+    private Integer index;
     private HashMap<String, FriendContainer> friendsMap;
+    {
+        index = 0;
+        oldestDate = new Date();
+    }
     /**
      * 
      */
@@ -29,7 +36,7 @@ public class FBFriendListCommunicationDateChecker {
         this.friendsMap = friendsMap;
     }
     
-    public void updateFriendsMap(/*HashMap<String, FriendContainer> friendsMap*/) {
+    public void updateFriendsMap() {
         try {
             getFriends();
             updateCommunicationDates();
@@ -39,7 +46,7 @@ public class FBFriendListCommunicationDateChecker {
         }
     }
     
-    public void getFriends (/*HashMap<String, FriendContainer> friendsMap*/) throws FacebookException {
+    public void getFriends () throws FacebookException {
         ResponseList<Friendlist> friends = facebook.getFriendlists();
         for (Friendlist f : friends) {
             ResponseList<Friend> friendsFromList = facebook.getFriendlistMembers(f.getId());
@@ -50,19 +57,31 @@ public class FBFriendListCommunicationDateChecker {
         }
     }
     
-    public void updateCommunicationDates(/*HashMap<String, FriendContainer> friendsMap*/) throws FacebookException {
-        InboxResponseList<Message> messages = facebook.getInbox();
-        
+    public void updateCommunicationDates() throws FacebookException {
+        InboxResponseList<Message> messages = facebook.getInbox(new Reading().until(oldestDate).limit(100));
+        index++;
         for (Message m : messages) {
             for (Comment c : m.getComments()) {
                 if (c !=null && c.getFrom() != null && c.getFrom().getName() != null) {
                     String name = c.getFrom().getName();
                     Date lastComDate = c.getCreatedTime();
+                    if (lastComDate.before(oldestDate)) {
+                        oldestDate = lastComDate;
+                    }
                     if (friendsMap.containsKey(name)) {
                         friendsMap.get(name).setLastCommunicationDate(lastComDate);
+                    } else {
+                        FriendContainer fc = new FriendContainer();
+                        fc.setName(name);
+                        fc.setId("");
+                        fc.setLastCommunicationDate(lastComDate);
+                        friendsMap.put(name, fc);
                     }
                 }
             }
+        }
+        if (index < 10) {
+            updateCommunicationDates();
         }
     }
 }

@@ -5,6 +5,8 @@
 <meta charset="UTF-8">
 </head>
 <body>
+<script src=
+  "https://www.java.com/js/deployJava.js"></script>
 <script>
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
@@ -16,16 +18,16 @@
     // for FB.getLoginStatus().
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
-      testAPI();
+      testAPI(response.authResponse.accessToken);
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
-        'into this app.';
+        'into this app MUTHERFUCKER';
     } else {
       // The person is not logged into Facebook, so we're not sure if
       // they are logged into this app or not.
       document.getElementById('status').innerHTML = 'Please log ' +
-        'into Facebook.';
+        'into Facebook MUTHERFUCKER';
     }
   }
 
@@ -34,6 +36,7 @@
   // code below.
   function checkLoginState() {
     FB.getLoginStatus(function(response) {
+      //debugger;
       statusChangeCallback(response);
     });
   }
@@ -76,13 +79,20 @@
 
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
-  function testAPI() {
+  function testAPI(tokenz) {
+    console.log(tokenz);
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
+      console.log(response);
       console.log('Successful login for: ' + response.name);
       document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';
     });
+    var attributes = { id:'app',
+        code:'pl.hackathon.warsaw.Main',  width:500, height:500};
+    var parameters = { jnlp_href: 'app.jnlp'} ;
+    deployJava.runApplet(attributes, parameters, '1.6');
+    //app.main();
   }
 </script>
 
@@ -95,8 +105,15 @@
 <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
 </fb:login-button>
 
+<div
+  class="fb-like"
+  data-share="true"
+  data-width="450"
+  data-show-faces="true">
+</div>
+
 <div id="status">
 </div>
 
 </body>
-</html>
+</html>				
