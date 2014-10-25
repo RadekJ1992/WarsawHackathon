@@ -8,6 +8,7 @@ package pl.hackathon.warsaw.view;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.Policy.Parameters;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -51,10 +52,19 @@ public class MainApplet extends JApplet implements ActionListener{
         
     }
     
+    
     public void init() {
+        String url = getDocumentBase().toString();
         
+        if (url.indexOf("?") > -1) {
+            String paramaters = url.substring(url.indexOf("?") + 1);
+            String token = paramaters.replace("token=", "");
+            if (!token.isEmpty()) {
+                Constants.setToken(token);
+            }
+        }
         this.setLayout(null);
-        if (this.getParameter(Constants.TOKEN_PARAMETER) != null) {
+        /*if (this.getParameter(Constants.TOKEN_PARAMETER) != null) {
             Constants.setToken(this.getParameter(Constants.TOKEN_PARAMETER));
         }
         if (this.getParameter(Constants.APP_ID_PARAMETER) != null) {
@@ -63,7 +73,7 @@ public class MainApplet extends JApplet implements ActionListener{
         if (this.getParameter(Constants.APP_SECRET_PARAMETER) != null) {
             Constants.setAppSecret(this.getParameter(Constants.APP_SECRET_PARAMETER));
         }
-        
+        */
         FacebookConnector fc = new FacebookConnector();
         friendsMap = fc.getFriendsMap();
         friendsNames = new Vector<String>(friendsMap.keySet());
