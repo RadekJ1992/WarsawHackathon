@@ -34,6 +34,7 @@ public class MainApplet extends JApplet implements ActionListener{
     JComboBox friendsList;
     JLabel friendsListLabel;
     JLabel lastCommunicationTextLabel;
+    JLabel friendIDLabel;
     /**
      * @throws HeadlessException
      */
@@ -70,6 +71,10 @@ public class MainApplet extends JApplet implements ActionListener{
         friendsList.setLocation(50,100);
         friendsList.setSize(150, 20);
         contentPane.add(friendsList);
+        friendIDLabel = new JLabel("");
+        friendIDLabel.setLocation(50,200);
+        friendIDLabel.setSize(150,20);
+        contentPane.add(friendIDLabel);
         lastCommunicationTextLabel = new JLabel("No conversations at all!");
         lastCommunicationTextLabel.setLocation(50,150);
         lastCommunicationTextLabel.setSize(600, 20);
@@ -87,8 +92,10 @@ public class MainApplet extends JApplet implements ActionListener{
         FriendContainer fc = (FriendContainer) friendsMap.get(friendName);
         if (fc != null) {
             updateLastCommunicationDateLabel(fc.getLastCommunicationDate());
+            friendIDLabel.setText(fc.getId());
         } else {
             updateLastCommunicationDateLabel(null);
+            friendIDLabel.setText(fc.getId());
         }
     }
 

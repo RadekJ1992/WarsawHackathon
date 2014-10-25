@@ -27,14 +27,7 @@ public class FacebookConnector {
         
         FBFriendListCommunicationDateChecker fbfriendListCommunicationDateChecker = new FBFriendListCommunicationDateChecker(facebook, friendsMap);
         fbfriendListCommunicationDateChecker.updateFriendsMap();
-        /*
-        for (FriendContainer friend : friendsMap.values()) {
-            if (friend.getLastCommunicationDate() != null) {
-                if (friend.getLastCommunicationDate().after(Constants.oldestCommunitactionDate)) {
-                    System.out.println("Komunikowałeś się z " + friend.getName());
-                }
-            }
-        }*/
+        
         return friendsMap;
 
     }

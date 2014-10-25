@@ -50,6 +50,27 @@ public class FriendContainer {
     }
     
     /**
+     * @param friend the friend to set
+     */
+    public void setFriend(Friend friend) {
+        this.friend = friend;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * @return the friend
      */
     public Friend getFriend() {
@@ -65,4 +86,6 @@ public class FriendContainer {
         this.name = fr.getName();
     }
 
+    public FriendContainer() {
+    }
 }
