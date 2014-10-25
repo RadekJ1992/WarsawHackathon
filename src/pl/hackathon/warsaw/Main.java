@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import pl.hackathon.warsaw.view.MainApplet;
 import facebook4j.BatchRequest;
 import facebook4j.BatchRequests;
 import facebook4j.BatchResponse;
@@ -34,38 +35,15 @@ import facebook4j.json.DataObjectFactory;
 
 public class Main {
 
-    /**
-     * 
-     */
-    public Main() {
-        // TODO Auto-generated constructor stub
-    }
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-          .setOAuthAppId(Constants.appId)
-          .setOAuthAppSecret(Constants.appSecret)
-          .setOAuthAccessToken(Constants.token)
-          .setOAuthPermissions(Constants.permissions);
-        FacebookFactory ff = new FacebookFactory(cb.build());
-        Facebook facebook = ff.getInstance();
-        //maps username to whole friend object 
-        HashMap<String, FriendContainer> friendsMap = new HashMap<>();
+        //FacebookConnector fc = new FacebookConnector();
+        //fc.run();
+        MainApplet mA = new MainApplet();
         
-        FBFriendListCommunicationDateChecker fbfriendListCommunicationDateChecker = new FBFriendListCommunicationDateChecker(facebook, friendsMap);
-        fbfriendListCommunicationDateChecker.updateFriendsMap();
-        
-        for (FriendContainer friend : friendsMap.values()) {
-            if (friend.getLastCommunicationDate() != null) {
-                if (friend.getLastCommunicationDate().after(Constants.oldestCommunitactionDate)) {
-                    System.out.println("Komunikowałeś się z " + friend.getName());
-                }
-            }
-        }
     }
 
 }
