@@ -5,10 +5,24 @@
  */
 package pl.hackathon.warsaw;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import facebook4j.BatchRequest;
+import facebook4j.BatchRequests;
+import facebook4j.BatchResponse;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
+import facebook4j.Friend;
+import facebook4j.Friendlist;
+import facebook4j.ResponseList;
+import facebook4j.User;
 import facebook4j.conf.ConfigurationBuilder;
+import facebook4j.internal.http.RequestMethod;
+import facebook4j.internal.org.json.JSONObject;
+import facebook4j.json.DataObjectFactory;
 
 public class Main {
 
@@ -28,12 +42,22 @@ public class Main {
           .setOAuthAppId(Constants.appId)
           .setOAuthAppSecret(Constants.appSecret)
           .setOAuthAccessToken(Constants.token)
-          .setOAuthPermissions("publish_actions,user_friends,user_about_me,user_status,read_friendlists");
+          .setOAuthPermissions(Constants.permissions);
         FacebookFactory ff = new FacebookFactory(cb.build());
         Facebook facebook = ff.getInstance();
-        //facebook.setOAuthAccessToken(new AccessTo
+        Map<String, Friend> friendMap = new HashMap<>();
         try {
-            facebook.postStatusMessage("Hello World from Facebook4J.");
+            Integer count = 0;
+            ResponseList<Friendlist> friends = facebook.getFriendlists();
+            for (Friendlist f : friends) {
+                System.out.println(f.getName());
+                ResponseList<Friend> friendsies = facebook.getFriendlistMembers(f.getId());
+                for (Friend fr : friendsies) {
+                    friendMap.put(fr.getId(), fr);
+                }
+                
+            }
+            System.out.println(count);
         } catch (FacebookException e) {
             e.printStackTrace();
         }
