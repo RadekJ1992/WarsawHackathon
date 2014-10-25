@@ -5,18 +5,26 @@
  */
 package pl.hackathon.warsaw;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import facebook4j.BatchRequest;
 import facebook4j.BatchRequests;
 import facebook4j.BatchResponse;
+import facebook4j.Comment;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
 import facebook4j.Friend;
 import facebook4j.Friendlist;
+import facebook4j.InboxResponseList;
+import facebook4j.Message;
+import facebook4j.Post;
 import facebook4j.ResponseList;
 import facebook4j.User;
 import facebook4j.conf.ConfigurationBuilder;
@@ -45,21 +53,18 @@ public class Main {
           .setOAuthPermissions(Constants.permissions);
         FacebookFactory ff = new FacebookFactory(cb.build());
         Facebook facebook = ff.getInstance();
-        Map<String, Friend> friendMap = new HashMap<>();
-        try {
-            Integer count = 0;
-            ResponseList<Friendlist> friends = facebook.getFriendlists();
-            for (Friendlist f : friends) {
-                System.out.println(f.getName());
-                ResponseList<Friend> friendsies = facebook.getFriendlistMembers(f.getId());
-                for (Friend fr : friendsies) {
-                    friendMap.put(fr.getId(), fr);
+        //maps username to whole friend object 
+        HashMap<String, FriendContainer> friendsMap = new HashMap<>();
+        
+        FBFriendListCommunicationDateChecker fbfriendListCommunicationDateChecker = new FBFriendListCommunicationDateChecker(facebook, friendsMap);
+        fbfriendListCommunicationDateChecker.updateFriendsMap();
+        
+        for (FriendContainer friend : friendsMap.values()) {
+            if (friend.getLastCommunicationDate() != null) {
+                if (friend.getLastCommunicationDate().after(Constants.oldestCommunitactionDate)) {
+                    System.out.println("Komunikowałeś się z " + friend.getName());
                 }
-                
             }
-            System.out.println(count);
-        } catch (FacebookException e) {
-            e.printStackTrace();
         }
     }
 

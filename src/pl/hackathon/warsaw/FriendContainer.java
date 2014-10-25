@@ -38,11 +38,13 @@ public class FriendContainer {
      * @param lastCommunicationDate the lastCommunicationDate to set
      */
     public void setLastCommunicationDate(Date lastCommunicationDate) {
-        if (this.lastCommunicationDate == null) {
-            this.lastCommunicationDate = lastCommunicationDate;
-        } else { 
-            if (this.lastCommunicationDate.before(lastCommunicationDate)) {
+        if (lastCommunicationDate != null) {
+            if (this.lastCommunicationDate == null) {
                 this.lastCommunicationDate = lastCommunicationDate;
+            } else { 
+                if (this.lastCommunicationDate.before(lastCommunicationDate)) {
+                    this.lastCommunicationDate = lastCommunicationDate;
+                }
             }
         }
     }
