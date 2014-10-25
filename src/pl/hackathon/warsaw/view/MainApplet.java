@@ -21,6 +21,7 @@ import javax.swing.SwingUtilities;
 
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
+import pl.hackathon.warsaw.Constants;
 import pl.hackathon.warsaw.FacebookConnector;
 import pl.hackathon.warsaw.FriendContainer;
 
@@ -37,6 +38,22 @@ public class MainApplet extends JApplet implements ActionListener{
      * @throws HeadlessException
      */
     public MainApplet() throws HeadlessException {
+        
+    }
+    
+    public void init() {
+        
+        this.setLayout(null);
+        if (this.getParameter(Constants.TOKEN_PARAMETER) != null) {
+            Constants.setToken(this.getParameter(Constants.TOKEN_PARAMETER));
+        }
+        if (this.getParameter(Constants.APP_ID_PARAMETER) != null) {
+            Constants.setAppId(this.getParameter(Constants.APP_ID_PARAMETER));
+        }
+        if (this.getParameter(Constants.APP_SECRET_PARAMETER) != null) {
+            Constants.setAppSecret(this.getParameter(Constants.APP_SECRET_PARAMETER));
+        }
+        
         FacebookConnector fc = new FacebookConnector();
         friendsMap = fc.getFriendsMap();
         friendsNames = new Vector<String>(friendsMap.keySet());
@@ -58,10 +75,6 @@ public class MainApplet extends JApplet implements ActionListener{
         lastCommunicationTextLabel.setSize(600, 20);
         contentPane.add(lastCommunicationTextLabel);
         this.setContentPane(contentPane);
-    }
-    
-    public void init() {
-        this.setLayout(null);
     }
 
     /* (non-Javadoc)
