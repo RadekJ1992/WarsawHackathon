@@ -170,6 +170,8 @@ public class MainApplet extends JApplet implements ActionListener{
         friendPictureLabel = new JLabel();
         friendPictureLabel.setSize(140, 140);
         friendPictureLabel.setLocation(25, 275);
+        friendPictureLabel.setIcon(new ImageIcon((new ImageIcon("logo.png")).getImage().getScaledInstance(140, 140,
+                java.awt.Image.SCALE_SMOOTH)));
         contentPane.add(friendPictureLabel);
         
         this.setContentPane(contentPane);
