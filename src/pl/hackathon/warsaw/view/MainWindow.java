@@ -6,6 +6,7 @@
 package pl.hackathon.warsaw.view;
 
 import java.awt.Desktop;
+import java.awt.EventQueue;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +31,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -41,7 +43,7 @@ import pl.hackathon.warsaw.FBFriendListCommunicationDateChecker;
 import pl.hackathon.warsaw.FacebookConnector;
 import pl.hackathon.warsaw.FriendContainer;
 
-public class MainApplet extends JApplet implements ActionListener{
+public class MainWindow extends JFrame implements ActionListener{
     
     HashMap<String, FriendContainer> friendsMap;
     Vector<String> friendsNames;
@@ -77,22 +79,21 @@ public class MainApplet extends JApplet implements ActionListener{
     /**
      * @throws HeadlessException
      */
-    public MainApplet() throws HeadlessException {
-        
-    }
-    
-    
-    public void init() {
+    public MainWindow() throws HeadlessException {
+        setTitle("FBCleaner");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        this.setResizable(false);
         setSize(750,500);
-        String url = getDocumentBase().toString();
-        
+        // String url = getDocumentBase().toString();
+        /*
         if (url.indexOf("?") > -1) {
             String paramaters = url.substring(url.indexOf("?") + 1);
             String token = paramaters.replace("token=", "");
             if (!token.isEmpty()) {
                 Constants.setToken(token);
             }
-        }
+        }*/
         this.setLayout(null);
         contentPane = new JPanel();
         contentPane.setLayout(null);
@@ -176,6 +177,11 @@ public class MainApplet extends JApplet implements ActionListener{
         contentPane.add(friendPictureLabel);
         
         this.setContentPane(contentPane);
+        
+    }
+    
+    
+    public void init() {
     }
 
     /* (non-Javadoc)
@@ -283,6 +289,18 @@ public class MainApplet extends JApplet implements ActionListener{
         } else {
             lastCommunicationTextLabel.setText("No conversations at all!");
         }
+    }
+    
+
+public static void main(String[] args) {
+        
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                MainWindow ex = new MainWindow();
+                ex.setVisible(true);
+            }
+        });
     }
 
 }
