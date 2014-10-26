@@ -83,6 +83,7 @@ public class MainApplet extends JApplet implements ActionListener{
     
     
     public void init() {
+        setSize(750,500);
         String url = getDocumentBase().toString();
         
         if (url.indexOf("?") > -1) {

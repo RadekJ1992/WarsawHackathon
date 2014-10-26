@@ -12,7 +12,7 @@ public class Constants {
 
     public static String appId = "766825526711978";
     public static String appSecret = "18724218ddac01255de6ea4421293f25";
-    public static String token = "CAACEdEose0cBAEDUp02EywOl2Fhyd23ZBtoQBnRXjGcxuWEYW5EkXMSM9ysnxEoMpA6BMh8LDuvcX5in02S0obvkz9yzhMjHvXUWET76ZBq7FpGY7OTNlptvOE21MV4m9oF1qupmlJ2sEpEk4gfJfxS8vlOJYzNS0VWmizrYp59ERtW0snicYsoziIrJxvGGQ98vIapGF3S4U8EZALy";
+    public static String token = "CAACEdEose0cBADw3OiWGDnSXChTqt9kTiOjrFUmypH1uCfsJ78zV1t4vZACDVexclTNP9YAQYQ5rpN0mZBHZBV7DPWsrZBA3ipx9jlJe9YbvTSG3W1fpCLN9psy4ZArILZBzH2KpvKIaFUePeZAf2MUjHc6BvxaZAy1n9wBYb2DCzqDVFXvHGqoRgn5BmgZCAwubq82VZAOoHeVdPg0RuHKdyV";
     public static String permissions = "publish_actions,user_friends,user_about_me,user_activities,user_status,read_friendlists,user_location,email,read_mailbox,read_page_mailboxes,read_stream";
 
     
