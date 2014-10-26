@@ -203,24 +203,24 @@ public class MainWindow extends JFrame implements ActionListener{
             chooser.setMultiSelectionEnabled(false);
             int returnVal = chooser.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                for (File f : chooser.getSelectedFiles()) {
-                    try {
-                        BufferedReader reader = new BufferedReader( new FileReader (f));
-                        String         line = null;
-                        StringBuilder  stringBuilder = new StringBuilder();
-                
-                        while( ( line = reader.readLine() ) != null ) {
-                            stringBuilder.append( line );
-                        }
-                        String token = stringBuilder.toString();
-                        
-                        if (!token.isEmpty() && token.trim().length() != 0) {
-                            Constants.setToken(token);
-                        }
-                    } catch (IOException exx) {
-                        System.out.println("Shit happens... " + exx.getMessage());
+                File f = chooser.getSelectedFile();
+                try {
+                    BufferedReader reader = new BufferedReader( new FileReader (f));
+                    String         line = null;
+                    StringBuilder  stringBuilder = new StringBuilder();
+            
+                    while( ( line = reader.readLine() ) != null ) {
+                        stringBuilder.append( line );
                     }
+                    String token = stringBuilder.toString();
+                    
+                    if (!token.isEmpty() && token.trim().length() != 0) {
+                        Constants.setToken(token);
+                    }
+                } catch (IOException exx) {
+                    System.out.println("Shit happens... " + exx.getMessage());
                 }
+            
             }
             
             FacebookConnector fc = new FacebookConnector();
@@ -300,8 +300,10 @@ public class MainWindow extends JFrame implements ActionListener{
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-                
-                
+            } else {
+                friendPictureLabel.setIcon(new ImageIcon((new ImageIcon("potato.png")).getImage().getScaledInstance(140, 140,
+                        java.awt.Image.SCALE_SMOOTH)));
+                this.repaint();
             }
         } else {
             updateLastCommunicationDateLabel(null);
