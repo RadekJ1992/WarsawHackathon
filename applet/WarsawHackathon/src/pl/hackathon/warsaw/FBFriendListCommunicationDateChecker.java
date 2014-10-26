@@ -7,6 +7,8 @@ package pl.hackathon.warsaw;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Vector;
 
 import facebook4j.Comment;
 import facebook4j.Facebook;
@@ -24,10 +26,39 @@ public class FBFriendListCommunicationDateChecker {
     private Date oldestDate;
     private Integer index;
     private HashMap<String, FriendContainer> friendsMap;
+    private HashSet<String> friendsToRemoveNames;
+    private HashSet<String> friendsWithoutConversationNames;
+    
     {
         index = 0;
         oldestDate = new Date();
+        friendsToRemoveNames = new HashSet<String>();
+        friendsWithoutConversationNames = new HashSet<String>();
     }
+    
+    
+    /**
+     * @return the friendsToRemoveNames
+     */
+    public Vector<String> getFriendsToRemoveNames() {
+        Vector<String> result = new Vector<String>(friendsToRemoveNames);
+        java.util.Collections.sort(result);
+        return result;
+    }
+    
+   
+
+    /**
+     * @return the friendsWithoutConversationNames
+     */
+    public Vector <String> getFriendsWithoutConversationNames() {
+        Vector<String> result = new Vector<String>(friendsWithoutConversationNames);
+        java.util.Collections.sort(result);
+        return result;
+    }
+
+
+
     /**
      * 
      */
@@ -53,6 +84,7 @@ public class FBFriendListCommunicationDateChecker {
             for (Friend fr : friendsFromList) {
                 FriendContainer frcon = new FriendContainer(fr);
                 friendsMap.put(fr.getName(), frcon);
+                friendsWithoutConversationNames.add(fr.getName());
             }
         }
     }
@@ -65,22 +97,37 @@ public class FBFriendListCommunicationDateChecker {
                 if (c !=null && c.getFrom() != null && c.getFrom().getName() != null) {
                     String name = c.getFrom().getName();
                     Date lastComDate = c.getCreatedTime();
+                    if (friendsWithoutConversationNames.contains(name)) {
+                        friendsWithoutConversationNames.remove(name);
+                    }
                     if (lastComDate.before(oldestDate)) {
                         oldestDate = lastComDate;
                     }
                     if (friendsMap.containsKey(name)) {
                         friendsMap.get(name).setLastCommunicationDate(lastComDate);
+                        if (lastComDate == null || friendsMap.get(name).getLastCommunicationDate().before(Constants.oldestCommunitactionDate)) {
+                            friendsToRemoveNames.add(name);
+                        } else {
+                            if (friendsToRemoveNames.contains(name)) {
+                                friendsToRemoveNames.remove(name);
+                            }
+                        }
                     } else {
                         FriendContainer fc = new FriendContainer();
                         fc.setName(name);
                         fc.setId("");
                         fc.setLastCommunicationDate(lastComDate);
                         friendsMap.put(name, fc);
+                        if (lastComDate == null || friendsMap.get(name).getLastCommunicationDate().before(Constants.oldestCommunitactionDate)) {
+                            friendsToRemoveNames.add(name);
+                        } else {
+                            if (friendsToRemoveNames.contains(name)) friendsToRemoveNames.remove(name);
+                        }
                     }
                 }
             }
         }
-        if (index < 10) {
+        if (index < 20) {
             updateCommunicationDates();
         }
     }

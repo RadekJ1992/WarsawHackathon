@@ -40,8 +40,6 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        //FacebookConnector fc = new FacebookConnector();
-        //fc.run();
         MainApplet mA = new MainApplet();
         
     }
