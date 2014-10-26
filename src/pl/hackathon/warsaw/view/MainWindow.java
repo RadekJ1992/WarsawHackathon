@@ -33,6 +33,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -70,7 +71,7 @@ public class MainWindow extends JFrame implements ActionListener{
     JLabel friendsWithoutConversationLabel;
     JComboBox friendsWithoutConversationComboBox;
 
-    JTextField tokenField;
+    JLabel tokenField;
     JButton startButton;
     
     JLabel topFriendLabel;
@@ -107,15 +108,13 @@ public class MainWindow extends JFrame implements ActionListener{
         contentPane = new JPanel();
         contentPane.setLayout(null);
         
-        tokenField = new JTextField();
-        tokenField.setLocation(25,25);
-        tokenField.setSize(300,25);
-        tokenField.setEnabled(true);
-        tokenField.setEditable(true);
-        contentPane.add(tokenField);
+//        tokenField = new JLabel("FBCleaner!");
+//        tokenField.setLocation(25,25);
+//        tokenField.setSize(300,25);
+//        contentPane.add(tokenField);
         startButton = new JButton("Get Friends");
         startButton.setSize(100, 25);
-        startButton.setLocation(350, 25);
+        startButton.setLocation(25, 25);
         startButton.setActionCommand("start_scan");
         startButton.addActionListener(this);
         contentPane.add(startButton);
@@ -175,7 +174,7 @@ public class MainWindow extends JFrame implements ActionListener{
         
         topFriendLabel = new JLabel();
         topFriendLabel.setLocation(25, 250);
-        topFriendLabel.setSize(400, 20);
+        topFriendLabel.setSize(500, 20);
         contentPane.add(topFriendLabel);
         
         friendPictureLabel = new JLabel();
@@ -199,9 +198,31 @@ public class MainWindow extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("start_scan")) {
-            if (tokenField.getText()!=null && !tokenField.getText().isEmpty() && tokenField.getText().trim().length() != 0) {
-                Constants.setToken(tokenField.getText());
+          //tworzenie obiektu JFileChooser
+            JFileChooser chooser = new JFileChooser();
+            chooser.setMultiSelectionEnabled(false);
+            int returnVal = chooser.showOpenDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                for (File f : chooser.getSelectedFiles()) {
+                    try {
+                        BufferedReader reader = new BufferedReader( new FileReader (f));
+                        String         line = null;
+                        StringBuilder  stringBuilder = new StringBuilder();
+                
+                        while( ( line = reader.readLine() ) != null ) {
+                            stringBuilder.append( line );
+                        }
+                        String token = stringBuilder.toString();
+                        
+                        if (!token.isEmpty() && token.trim().length() != 0) {
+                            Constants.setToken(token);
+                        }
+                    } catch (IOException exx) {
+                        System.out.println("Shit happens... " + exx.getMessage());
+                    }
+                }
             }
+            
             FacebookConnector fc = new FacebookConnector();
             friendsMap = fc.getFriendsMap();
             friendsNames = new Vector<String>(friendsMap.keySet());
