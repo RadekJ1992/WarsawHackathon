@@ -14,6 +14,24 @@ public class FriendContainer {
     private String id;
     private String name;
     private Date lastCommunicationDate;
+    private int msgCount;
+    {
+        msgCount = 0;
+    }
+    /**
+     * @return the msgCount
+     */
+    public int getMsgCount() {
+        return msgCount;
+    }
+
+    /**
+     * @param msgCount the msgCount to set
+     */
+    public void setMsgCount(int msgCount) {
+        this.msgCount = msgCount;
+    }
+
     /**
      * @return the id
      */

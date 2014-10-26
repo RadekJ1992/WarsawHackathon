@@ -12,7 +12,7 @@ public class Constants {
 
     public static String appId = "766825526711978";
     public static String appSecret = "18724218ddac01255de6ea4421293f25";
-    public static String token = "CAACEdEose0cBAC5upzacNsRDzcI5XpAs0tcrEK1Uisz0dbV20EkkENUFr0NBf249iwKCoHo3gb6w9EwAZB4R2RAm4ZAk6VZAcJSnC1LSrllKdYWE3lW8AdeDzRX9iEYHvE9dyqY2NYKNYhzLB0HidqeSvD2oVXyBu1fH7HxYFMrtehWFjkZC7nvBz0ZAXwWeZCGMlGJs7gpAMvZA7aOmabxLPQjwLAMVJoZD";
+    public static String token = "CAACEdEose0cBADCRgBCUHDNPBZA0n98UED00k2u9PnAZC0P6XZCx7bKCcMLkt7LZClhiniC2VZB3XpueZCcSAKI6XIcUqq6sc1gEB0a6bZAVrSsWonk4ZBaDjFCZBxRk4a8yPngKhdPdZBCSkNzxevl88HszI2OYEjiOOqEg4uCbMrqzlvk0sqqjYsm5GLR3UToZCt04gJWZB9KJ0bZCYUZBtZBwhMeQSRRwoyvqcgZD";
     public static String permissions = "publish_actions,user_friends,user_about_me,user_activities,user_status,read_friendlists,user_location,email,read_mailbox,read_page_mailboxes,read_stream";
 
     
@@ -28,8 +28,8 @@ public class Constants {
         Constants.appId = newAppId;
     }
 
-    public static void setToken(String newAppId) {
-        Constants.appId = newAppId;
+    public static void setToken(String newToken) {
+        Constants.token = newToken;
     }
     public static Date oldestCommunitactionDate;
     
