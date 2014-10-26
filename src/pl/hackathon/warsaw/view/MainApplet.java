@@ -96,21 +96,12 @@ public class MainApplet extends JApplet implements ActionListener{
         startButton.setActionCommand("start_scan");
         startButton.addActionListener(this);
         contentPane.add(startButton);
-        /*
-        FacebookConnector fc = new FacebookConnector();
-        friendsMap = fc.getFriendsMap();
-        friendsNames = new Vector<String>(friendsMap.keySet());
-        friendsToRemoveNames = fc.getFriendsToRemoveNames();
-        friendsWithoutConversationNames = fc.getFriendsWithoutConversationNames();
-        java.util.Collections.sort(friendsNames);
-        */
         friendsListLabel = new JLabel("Friends List:");
         friendsListLabel.setLocation(25,50);
         friendsListLabel.setSize(250, 20);
         contentPane.add(friendsListLabel);
         
         friendsList = new JComboBox(friendsNames);
-        //friendsList.setSelectedIndex(0);
         friendsList.addActionListener(this);
         friendsList.setLocation(25,75);
         friendsList.setSize(250, 20);
@@ -121,7 +112,6 @@ public class MainApplet extends JApplet implements ActionListener{
         friendsToRemoveLabel.setSize(600, 20);
         contentPane.add(friendsToRemoveLabel);
         friendsToRemoveComboBox = new JComboBox(friendsToRemoveNames);
-        //friendsToRemoveComboBox.setSelectedIndex(0);
         friendsToRemoveComboBox.addActionListener(this);
         friendsToRemoveComboBox.setLocation(25,125);
         friendsToRemoveComboBox.setSize(250, 20);
@@ -133,7 +123,6 @@ public class MainApplet extends JApplet implements ActionListener{
         contentPane.add(friendsWithoutConversationLabel);
         
         friendsWithoutConversationComboBox = new JComboBox(friendsWithoutConversationNames);
-        //friendsWithoutConversationComboBox.setSelectedIndex(0);
         friendsWithoutConversationComboBox.addActionListener(this);
         friendsWithoutConversationComboBox.setLocation(25,175);
         friendsWithoutConversationComboBox.setSize(250, 20);
@@ -174,8 +163,8 @@ public class MainApplet extends JApplet implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("start_scan")) {
-            if (tokenField.getText()!=null && !tokenField.getText().isEmpty()) {
-             //   Constants.setToken(tokenField.getText());
+            if (tokenField.getText()!=null && !tokenField.getText().isEmpty() && tokenField.getText().trim().length() != 0) {
+                Constants.setToken(tokenField.getText());
             }
             FacebookConnector fc = new FacebookConnector();
             friendsMap = fc.getFriendsMap();
@@ -199,27 +188,7 @@ public class MainApplet extends JApplet implements ActionListener{
                     topName = fcon.getName();
                 }
             }
-            topFriendLabel.setText("Your best friend is " + secondTopName + " with " + secondTopMsgCount + " messages!");
-            /*friendsToRemoveComboBox = new JComboBox(friendsToRemoveNames);
-            friendsToRemoveComboBox.setSelectedIndex(0);
-            friendsToRemoveComboBox.addActionListener(this);
-            friendsToRemoveComboBox.setLocation(25,125);
-            friendsToRemoveComboBox.setSize(250, 20);
-            contentPane.add(friendsToRemoveComboBox);
-            friendsList = new JComboBox(friendsNames);
-            friendsList.setSelectedIndex(0);
-            friendsList.addActionListener(this);
-            friendsList.setLocation(25,75);
-            friendsList.setSize(250, 20);
-            contentPane.add(friendsList);
-            friendsWithoutConversationComboBox = new JComboBox(friendsWithoutConversationNames);
-            friendsWithoutConversationComboBox.setSelectedIndex(0);
-            friendsWithoutConversationComboBox.addActionListener(this);
-            friendsWithoutConversationComboBox.setLocation(25,175);
-            friendsWithoutConversationComboBox.setSize(250, 20);
-            contentPane.add(friendsWithoutConversationComboBox);
-            this.setContentPane(contentPane);
-            */
+            topFriendLabel.setText("Your best friend is " + secondTopName + " with " + secondTopMsgCount + " conversations!");
             
             this.repaint();
             return;
@@ -240,12 +209,10 @@ public class MainApplet extends JApplet implements ActionListener{
         FriendContainer fc = (FriendContainer) friendsMap.get(friendName);
         if (fc != null) {
             updateLastCommunicationDateLabel(fc.getLastCommunicationDate());
-            //friendIDLabel.setText(fc.getId());
             ContactAddressField.setText("http://www.facebook.com/" + fc.getId());
             ContactAddressLabel.setText(fc.getName() + " Address Link:");
         } else {
             updateLastCommunicationDateLabel(null);
-            //friendIDLabel.setText(fc.getId());
             ContactAddressField.setText("http://www.facebook.com/" + fc.getId());
             ContactAddressLabel.setText(fc.getName() + " Address Link:");
         }
