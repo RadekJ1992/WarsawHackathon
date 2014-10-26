@@ -10,8 +10,10 @@ import java.awt.EventQueue;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -85,15 +87,22 @@ public class MainWindow extends JFrame implements ActionListener{
 
         this.setResizable(false);
         setSize(750,500);
-        // String url = getDocumentBase().toString();
-        /*
-        if (url.indexOf("?") > -1) {
-            String paramaters = url.substring(url.indexOf("?") + 1);
-            String token = paramaters.replace("token=", "");
-            if (!token.isEmpty()) {
+        try {
+            BufferedReader reader = new BufferedReader( new FileReader ("token.conf"));
+            String         line = null;
+            StringBuilder  stringBuilder = new StringBuilder();
+    
+            while( ( line = reader.readLine() ) != null ) {
+                stringBuilder.append( line );
+            }
+            String token = stringBuilder.toString();
+            
+            if (!token.isEmpty() && token.trim().length() != 0) {
                 Constants.setToken(token);
             }
-        }*/
+        } catch (IOException e) {
+            System.out.println("Shit happens... " + e.getMessage());
+        }
         this.setLayout(null);
         contentPane = new JPanel();
         contentPane.setLayout(null);
