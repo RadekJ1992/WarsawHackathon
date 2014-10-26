@@ -104,6 +104,7 @@ public class FBFriendListCommunicationDateChecker {
                         oldestDate = lastComDate;
                     }
                     if (friendsMap.containsKey(name)) {
+                        friendsMap.get(name).setMsgCount(friendsMap.get(name).getMsgCount()+1);
                         friendsMap.get(name).setLastCommunicationDate(lastComDate);
                         if (lastComDate == null || friendsMap.get(name).getLastCommunicationDate().before(Constants.oldestCommunitactionDate)) {
                             friendsToRemoveNames.add(name);
@@ -118,6 +119,7 @@ public class FBFriendListCommunicationDateChecker {
                         fc.setId("");
                         fc.setLastCommunicationDate(lastComDate);
                         friendsMap.put(name, fc);
+                        friendsMap.get(name).setMsgCount(friendsMap.get(name).getMsgCount()+1);
                         if (lastComDate == null || friendsMap.get(name).getLastCommunicationDate().before(Constants.oldestCommunitactionDate)) {
                             friendsToRemoveNames.add(name);
                         } else {
