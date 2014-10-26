@@ -9,7 +9,16 @@ import java.awt.Desktop;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.security.Policy.Parameters;
 import java.util.Collection;
 import java.util.Date;
@@ -17,6 +26,7 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -48,6 +58,8 @@ public class MainApplet extends JApplet implements ActionListener{
     JLabel friendsListLabel;
     JLabel lastCommunicationTextLabel;
     JLabel friendIDLabel;
+    
+    JLabel friendPictureLabel;
     
     JLabel friendsToRemoveLabel;
     JComboBox friendsToRemoveComboBox;
@@ -154,6 +166,12 @@ public class MainApplet extends JApplet implements ActionListener{
         topFriendLabel.setLocation(25, 250);
         topFriendLabel.setSize(400, 20);
         contentPane.add(topFriendLabel);
+        
+        friendPictureLabel = new JLabel();
+        friendPictureLabel.setSize(140, 140);
+        friendPictureLabel.setLocation(25, 275);
+        contentPane.add(friendPictureLabel);
+        
         this.setContentPane(contentPane);
     }
 
@@ -211,6 +229,41 @@ public class MainApplet extends JApplet implements ActionListener{
             updateLastCommunicationDateLabel(fc.getLastCommunicationDate());
             ContactAddressField.setText("http://www.facebook.com/" + fc.getId());
             ContactAddressLabel.setText(fc.getName() + " Address Link:");
+            if (fc.getId() != null && !fc.getId().isEmpty() && fc.getId().trim().length() != 0) {
+                try {
+                File destinationFile = new File("img.jpg");
+                
+                HttpURLConnection con = (HttpURLConnection)(new URL( "http://graph.facebook.com/" + fc.getId() + "/picture?width=140&height=140"  ).openConnection());
+                con.setInstanceFollowRedirects( false );
+                con.connect();
+                int responseCode = con.getResponseCode();
+                System.out.println( responseCode );
+                String location = con.getHeaderField( "Location" );
+                System.out.println( location );
+                
+                java.net.URL url;
+                url = new URL(location);
+                InputStream is = url.openStream();
+                OutputStream os= new FileOutputStream(destinationFile);
+    
+                byte[] b = new byte[2048];
+                int length;
+    
+                while ((length = is.read(b)) != -1) {
+                    os.write(b, 0, length);
+                }
+                os.close();
+                is.close();
+                friendPictureLabel.setIcon(new ImageIcon((new ImageIcon("img.jpg")).getImage().getScaledInstance(140, 140,
+                        java.awt.Image.SCALE_SMOOTH)));
+                this.repaint();
+                } catch ( IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                
+                
+            }
         } else {
             updateLastCommunicationDateLabel(null);
             ContactAddressField.setText("http://www.facebook.com/" + fc.getId());
